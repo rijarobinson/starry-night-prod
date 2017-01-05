@@ -1,0 +1,124 @@
+{% extends "main.html" %}
+{% block content %}
+{% include "header.html" %}
+    <div class="row divider green">
+        <div class="col-md-12"></div>
+    </div>
+    <div class="row banner main" title="Image of NuSTAR Stares at the Sun">
+        <div class="col-md-11 col-md-offset-1 padding-top">
+            <h1>{{state.name}}
+            </h1>
+        </div>
+    </div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="flash">
+              {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <ul>
+                        {% for message in messages %}
+                            <li><strong>{{message}}</strong></li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                {% endwith %}
+            </div>
+        </div>
+    </div>
+    <div class="row padding-top padding-bottom">
+        <div class="col-md-1"></div>
+        <div class="col-md-11 padding-none">
+            <!--show this button only if state's creator-->
+            {% if currentUserID == 1 %}
+                <a href="{{url_for('editState', state_id=state.id )}}">
+                    <button class="btn btn-default" id="edit-state">
+                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>Edit State
+                    </button>
+                </a>
+            {% elif not currentUserID %}
+                <a href="{{url_for('showLogin')}}">
+                    <button class="btn btn-default" id="login">
+                        <span class="glyphicon glyphicon-tree-conifer" aria-hidden="true"></span>Log In to Add Site
+                    </button>
+                </a>
+            {% else %}
+                <a href="{{url_for('newSite', state_id=state.id )}}">
+                    <button class="btn btn-default" id="new-site">
+                        <span class="glyphicon glyphicon-tree-conifer" aria-hidden="true"></span>Add Site
+                    </button>
+                </a>
+            {% endif %}
+        </div>
+        <div class="col-md-7"></div>
+    </div>
+    {% if site.id %}
+        <div class="row site-item">
+            <div class="col-md-1"></div>
+            <div class="col-md-5">
+                <h3>{{site.name}}</h3>
+                <p><span class="text-right">Location: </span>{{site.city}}, {{state.name}}</p>
+                {% if site.phone %}
+                    <p><span class="text-right">Phone:</span>{{site.phone}}</p>
+                {% endif %}
+                {% if site.website %}
+                    <p><span class="text-right">Website:</span>{{site.website}}</p>
+                {% endif %}
+                {% if site.notes %}
+                    <p>{{site.notes}}</p>
+                {% endif %}
+                <div class="site-display">Site Type: {{site.site_type}}</div>
+                    {% if site.user_id == currentUserID %}
+                    <a href='{{url_for('editSite', state_id=state.id, site_id=site.id )}}'>Edit</a> |
+                    <a href='{{url_for('deleteSite', state_id=state.id, site_id=site.id )}}'>Delete</a>
+                    {% endif %}
+                </div>
+                <div class="col-md-5">
+                    <div id="map" style="height: 200px; width: 100%;">Map not available-check address of site or internet connection.</div>
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+    {% endif %}
+
+
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8GWgtUsLZL2JGzG2ydB93q_QtjVkLYlA&callback=initMap">
+    </script>
+    <script>
+        function initMap() {
+            var geocoder = new google.maps.Geocoder();    // instantiate a geocoder object
+                    {% for j in jsStates %}
+                        stateAbbrev = "{{j.abbrev}}";
+                    {% endfor %}
+                    {% for a in jsSites %}
+                        siteName = "{{a.name}}";
+                        siteCity = "{{a.city}}";
+                    {% endfor %}
+
+            var address = siteName + " " + siteCity + " " + stateAbbrev;
+            geocoder.geocode({ "address": address }, function(results, status) {
+                if (status == google.maps.GeocoderStatus.OK ) {
+                    var latLon = results[0].geometry.location + "";
+                    var latLon = latLon.toString().replace("(","");
+                    var latLon = latLon.replace(")","");
+                    var splitLatLon = latLon.split(",");
+                    var lat = Number(splitLatLon[0]);
+                    var lon = Number(splitLatLon[1]);
+                    var uluru = {lat: lat, lng: lon};
+                    var map = new google.maps.Map(document.getElementById("map"), {
+                              zoom: 5,
+                              center: uluru
+                              });
+                    var marker = new google.maps.Marker({
+                                 map: map,
+                                 position: uluru
+                                 });
+                }
+                else {
+                    console.log("Geocode was not successful for the following reason: " + status);
+                }
+            });
+        }
+    </script>
+
+
+
+{% endblock %}

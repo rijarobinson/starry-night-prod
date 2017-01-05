@@ -1,0 +1,139 @@
+{% extends "main.html" %}
+{% block content %}
+{% include "header.html" %}
+    <div class="row divider green">
+        <div class="col-md-12"></div>
+    </div>
+    <div class="row banner main">
+        <div class="col-md-11 col-md-offset-1 padding-top">
+            <h1>{{state.name}}</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="flash">
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        <ul>
+                            {% for message in messages %}
+                                <li><strong>{{message}}</strong></li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                {% endwith %}
+            </div>
+        </div>
+    </div>
+    <div class="row padding-top padding-bottom">
+        <div class="col-md-1"></div>
+        <div class="col-md-11 padding-none">
+            <!--show this button only if state's creator-->
+            {% if currentUserID == 1 %}
+                <a href="{{url_for('editState', state_id=state.id )}}">
+                    <button class="btn btn-default" id="edit-state">
+                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                        Edit State
+                    </button>
+                </a>
+                <a href="{{url_for('newSite', state_id=state.id )}}">
+                    <button class="btn btn-default" id="new-site">
+                        <span class="glyphicon glyphicon-tree-conifer" aria-hidden="true"></span>
+                        Add Site
+                    </button>
+                </a>
+            {% elif not currentUserID %}
+                <a href="{{url_for('showLogin')}}">
+                    <button class="btn btn-default" id="login">
+                        <span class="glyphicon glyphicon-tree-conifer" aria-hidden="true"></span>
+                        Log In to Add Site
+                    </button>
+                </a>
+            {% else %}
+                <a href="{{url_for('newSite', state_id=state.id )}}">
+                    <button class="btn btn-default" id="new-site">
+                        <span class="glyphicon glyphicon-tree-conifer" aria-hidden="true"></span>
+                        Add Site
+                    </button>
+                </a>
+            {% endif %}
+        </div>
+    </div>
+    <!--TODO: enhancement, add trip advisor reviews for sites, maybe add address field for more accuracy-->
+    {% if sites %}
+        {% set mapNo = sites|length - 1 %}
+        {% for s in sites %}
+            <div class="row site-item">
+                <div class="col-md-1"></div>
+                <div class="col-md-5">
+                    <a href="{{url_for('showSingleSite', state_id=s.state_id, site_id=s.id)}}">
+                        <h3>{{s.name}}</h3>
+                    </a>
+                    <p><span class="text-right">Location: </span>{{s.city}}, {{state.name}}</p>
+                    {% if s.phone %}
+                        <p><span class="text-right">Phone:</span>{{s.phone}}</p>
+                    {% endif %}
+                    {% if s.website %}
+                        <p><span class="text-right">Website:</span>{{s.website}}</p>
+                    {% endif %}
+                    {% if s.notes %}
+                        <p>{{s.notes}}</p>
+                    {% endif %}
+                        <div class="site-display">Site Type: {{s.site_type}}</div>
+                    {% if s.user_id == currentUserID %}
+                        <a href="{{url_for('editSite', state_id=state.id, site_id=s.id )}}">Edit</a> |
+                        <a href="{{url_for('deleteSite', state_id=state.id, site_id=s.id )}}">Delete</a>
+                    {% endif %}
+                </div>
+                <div class="col-md-5 text-right">
+                    <div id="map{{mapNo}}" style="height: 200px; width: 100%;">Map not available-check address of site or internet connection.</div>
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+            {% set mapNo = mapNo - 1 %}
+            {% endfor %}
+    {% endif %}
+
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8GWgtUsLZL2JGzG2ydB93q_QtjVkLYlA&callback=initMap">
+    </script>
+
+    <script>
+        function initMap() {
+            mapDivNo = 0;
+            var geocoder = new google.maps.Geocoder();    // instantiate a geocoder object
+            {% for j in jsSites %}
+                var stateID = {{j.state_id}};
+                var stateAbbrev = "";
+                {% for a in jsStates %}
+                    if (stateID == {{a.id}}) {
+                        stateAbbrev = "{{a.abbrev}}";
+                    }
+                {% endfor %}
+                var address = "{{j.name}} {{j.city}} " + stateAbbrev;
+                geocoder.geocode({ 'address': address }, function(results, status) {
+                    if (status == google.maps.GeocoderStatus.OK ) {
+                        var latLon = results[0].geometry.location + "";
+                        var latLon = latLon.toString().replace("(","");
+                        var latLon = latLon.replace(")","");
+                        var splitLatLon = latLon.split(",");
+                        var lat = Number(splitLatLon[0]);
+                        var lon = Number(splitLatLon[1]);
+                        var uluru = {lat: lat, lng: lon};
+            {% endfor %}
+            {% for x in range(0,jsSites|length) %}
+                var map = new google.maps.Map(document.getElementById("map{{x}}"), {
+                          zoom: 5,
+                          center: uluru
+                          })
+                var marker = new google.maps.Marker({
+                             map: map,
+                             position: uluru
+                             });
+                    }
+                    else {
+                        console.log("Geocode was not successful for the following reason: " + status);
+                    }
+                });
+            {% endfor %}
+        }
+    </script>
+{% endblock %}

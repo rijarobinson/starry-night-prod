@@ -1,0 +1,141 @@
+{% extends "main.html" %}
+{% block content %}
+{% include "header.html" %}
+    <div class="row divider blue">
+        <div class="col-md-12"></div>
+    </div>
+    <div class="row banner main">
+        <div class="col-md-1"></div>
+        <div class="col-md-11 padding-top">
+            <h1>Find a Starry Night!</h1>
+        </div>
+    </div>
+    <div class="flash">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <ul>
+                {% for message in messages %}
+                    <li>{{message}}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+    </div>
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <h3>Locate a great place for stargazing in the U.S.</h3>
+        </div>
+    <div class="row">
+        <div class="col-md-6">
+            <h2>States that have sites listed</h2>
+            {% for state in states %}
+                {% if state.id in sites %}
+                    <a href="{{url_for('showSite', state_id=state.id)}}">
+                        <div class="state-list">
+                            <h3>
+                            {{state.name}} - {{state.abbrev}}
+                            {% if currentUserID == 1 %}
+                                     -
+                                    <a href="{{url_for('editState', state_id=state.id )}}">
+                                        Edit State |
+                                    </a>
+                                    <a href="{{url_for('deleteState', state_id=state.id )}}">
+                                        Delete State
+                                    </a>
+                            {% endif %}
+                            </h3>
+                        </div>
+                    </a>
+                {% endif %}
+            {% endfor %}
+            <div class="padding-top">
+                {% if currentUserID == 1 %}
+                Note to Administrator: 50 States are loaded plus the District of Columbia. Do not use Add New State option unless you need to add a U.S. Territory.</br>
+                    <a href="{{url_for('addState')}}">
+                        <button class="btn btn-default padding-top" id="new-state" type="button">
+                            <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                            Add New State
+                        </button>
+                    </a>
+                    <a href="{{url_for('newSiteNoState')}}">
+                        <button class="btn btn-default padding-top" id="new-site" type="button">
+                            <span class="glyphicon glyphicon-tree-conifer" aria-hidden="true"></span>
+                            Add Site to State Not Listed Here
+                        </button>
+                    </a>
+                {% elif not currentUserID %}
+                    <a href="{{url_for('showLogin')}}">
+                        <button class="btn btn-default padding-top" id="login" type="button">
+                            <span class="glyphicon glyphicon-tree-conifer" aria-hidden="true"></span>Log In to Add Site
+                        </button>
+                    </a>
+                {% else %}
+                <a href="{{url_for('newSiteNoState')}}">
+                    <button class="btn btn-default padding-top" id="new-site" type="button">
+                        <span class="glyphicon glyphicon-tree-conifer" aria-hidden="true"></span>
+                        Add Site to State Not Listed Here
+                    </button>
+                </a>
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-md-6">
+            <h2>Newest Sites Added!</h2>
+            {% set mapNo = sites|length -1 %}
+            {% for site in allSites %}
+                <a href="{{url_for('showSingleSite', state_id=site.state_id, site_id=site.id)}}">
+                    <div class="state-list">
+                        <h5>{{site.name}}</h5>
+                        <div class="plain-text">{{site.city}}, {{site.state.abbrev}}</div>
+                    </div>
+                </a>
+                <div id="map{{mapNo}}" style="height: 150px; width: 100%;">Map not available-check address of site or internet connection.</div>
+                {% set mapNo = mapNo - 1 %}
+            {% endfor %}
+        </div>
+    </div>
+
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8GWgtUsLZL2JGzG2ydB93q_QtjVkLYlA&callback=initMap">
+    </script>
+
+    <script>
+        function initMap() {
+            var geocoder = new google.maps.Geocoder();    // instantiate a geocoder object
+            {% for j in jsSites %}
+                var stateID = {{j.state_id}};
+                var stateAbbrev = "";
+                {% for a in jsStates %}
+                    if (stateID == {{a.id}}) {
+                        stateAbbrev = "{{a.abbrev}}";
+                    }
+                {% endfor %}
+                var address = "{{j.name}} {{j.city}} " + stateAbbrev;
+                console.log(address);
+                geocoder.geocode( { 'address': address }, function(results, status) {
+                    if ( status == google.maps.GeocoderStatus.OK ) {
+                        var latLon = results[0].geometry.location + "";
+                        var latLon = latLon.toString().replace("(","");
+                        var latLon = latLon.replace(")","");
+                        var splitLatLon = latLon.split(",");
+                        var lat = Number(splitLatLon[0]);
+                        var lon = Number(splitLatLon[1]);
+                        var uluru = {lat: lat, lng: lon};
+            {% endfor %}
+            {% for x in range(0,jsSites|length) %}
+                    var map = new google.maps.Map(document.getElementById("map{{x}}"), {
+                              zoom: 5,
+                              center: uluru
+                              })
+                    var marker = new google.maps.Marker({
+                                 map: map,
+                                 position: uluru
+                                 });
+                }
+                else {
+                    console.log("Geocode was not successful for the following reason: " + status);
+                }
+            });
+            {% endfor %}
+        }
+    </script>
+{% endblock %}

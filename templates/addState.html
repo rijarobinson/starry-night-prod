@@ -1,0 +1,38 @@
+{% extends "main.html" %}
+{% block content %}
+{% include "header.html" %}
+    <!--TODO: enhancement, make city, state, site type required input (same for edit)-->
+    <div class="row divider green">
+        <div class="col-md-12"></div>
+    </div>
+    <div class="row banner main">
+        <div class="col-md-11 col-md-offset-1 padding-top">
+            <h1>Add State</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 col-md-offset-1 padding-top">
+            <form action="#" method="post">
+                <div class="form-group">
+                    <label for="name">State Name:</label>
+                    <input type ="text" class="form-control" maxlength="100" name="name">
+                    <div class="padding-bottom"></div>
+                    <div class="form-group">
+                    <label for="abbrev">State Abbreviation:</label>
+                    <input type ="text" class="form-control" maxlength="2" name="abbrev">
+                    <div class="padding-bottom"></div>
+                    <button type="submit" class="btn btn-default" id="submit" type="submit">
+                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                        Create
+                    </button>
+                    <a href='{{url_for('showStates')}}'>
+                        <button class="btn btn-default cancel" type="button">
+                            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                Cancel
+                        </button>
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

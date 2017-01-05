@@ -1,0 +1,64 @@
+{% extends "main.html" %}
+{% block content %}
+{% include "header.html" %}
+    <div class="row banner main">
+        <div class="col-md-1"></div>
+    <div class="row divider green">
+        <div class="col-md-12"></div>
+    </div>
+    <div class="row banner main">
+        <div class="col-md-11 col-md-offset-1 padding-none">
+            <h1>
+                {{ state.name }} - public page
+            </h1>
+        </div>
+    </div>
+<div class = "row">
+    <div class = "col-md-12">
+    </div>
+</div>
+    <div class = "row">
+        <div class="col-md-12">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <ul>
+                        {% for message in messages %}
+                             <li> <strong> {{ message }} </strong> </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
+        </div>
+    </div>
+        <div class="row padding-top padding-bottom">
+        <div class="col-md-1"></div>
+        <div class="col-md-11 padding-none">
+    <a href="{{url_for('showLogin')}}">
+    <button class="btn btn-default" id="login">
+        <span class="glyphicon glyphicon-tree-conifer" aria-hidden="true"></span>Log In to Add Site
+    </button>
+</a>
+</div>
+<div class = "col-md-7"></div>
+</div>
+    {% if sites %}
+        <div class="row">
+            <div class="col-md-1"></div>
+            <div class="col-md-3">
+                    {% for s in sites %}
+                            <div class="site-item">
+                                <h3>{{s.name}} - {{s.id}} - {{s.user_id}} - {{currentUserID}} - {{s.state_id}}</h3>
+                                <p>{{s.city}}</p>
+                                <p>{{state.name}}</p>
+                                <p>{{s.phone}}</p>
+                                <p>{{s.website}}</p>
+                                <p>{{s.notes}}</p>
+                                <div class = "site-display">{{s.site_type}}</div>
+
+                            </div>
+                    {% endfor %}
+            </div>
+            <div class="col-md-1"></div>
+        </div>
+    {% endif %}
+{% endblock %}

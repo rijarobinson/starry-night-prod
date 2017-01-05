@@ -1,0 +1,76 @@
+{% extends "main.html" %}
+{% block content %}
+{% include "header.html" %}
+    <div class="row divider blue">
+        <div class="col-md-12"></div>
+    </div>
+    <div class="row banner main">
+        <div class="col-md-1"></div>
+        <div class="col-md-11 padding-top">
+            <h1>Add New Starry Site</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 col-md-offset-1 padding-top">
+            <form action="#" method = "post">
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type ="text" maxlength="50" class="form-control" name="name" placeholder="Name of the site">
+                    <label for="city">City:</label>
+                    <div class="input-group">
+                        <input type ="text" class="form-control" maxlength="50" name="city" placeholder="City where site is located">
+                    </div>
+                    <label for="state">State:</label>
+                    <div class="input-group">
+                        {{state_name}}
+                    </div>
+                    <label for="website">Website:</label>
+                    <div class="input-group">
+                        <input type ="text" class="form-control" maxlength="100" name="website" placeholder="Enter Website">
+                    </div>
+                    <label for="phone">Phone:</label>
+                    <div class="input-group">
+                        <input type ="text" class="form-control" maxlength="12" name="phone" placeholder="Enter phone number">
+                    </div>
+                    <label for="notes">Notes about site:</label>
+                    <textarea class="form-control" maxlength="250" rows="3" name="notes" placeholder="Helpful notes about the site"></textarea>
+                    <label for="site_type">Site Type (Primarily):</label>
+                    <div class="radio">
+                      <label>
+                        <input type="radio" name="site_type" id="site_type1" value="Tent Camping">
+                            Tent Camping
+                      </label>
+                    </div>
+                    <div class="radio">
+                      <label>
+                        <input type="radio" name="site_type" id="site_type2" value="Open 24 Hours (no tent camping)">
+                            Open 24 Hours (no tent camping)
+                      </label>
+                    </div>
+                    <div class="radio">
+                      <label>
+                        <input type="radio" name="site_type" id="site_type3" value="Hotel/Motel">
+                            Hotel/Motel
+                      </label>
+                    </div>
+                    <div class="radio">
+                      <label>
+                        <input type="radio" name="site_type" id="site_type4" value="Backpacking Site">
+                            Backpacking Site
+                      </label>
+                    </div>
+                    <button type="submit" class="btn btn-default" id="submit" type="submit">
+                        <span class="glyphicon glyphicon-tree-conifer" aria-hidden="true"></span>
+                        Create
+                    </button>
+                    <a href = '{{url_for('showStates')}}'>
+                        <button class="btn btn-default cancel" type = "button">
+                            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                            Cancel
+                        </button>
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

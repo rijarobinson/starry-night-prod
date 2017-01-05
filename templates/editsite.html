@@ -1,0 +1,95 @@
+{% extends "main.html" %}
+{% block content %}
+{% include "header.html" %}
+    <div class="row divider green">
+        <div class="col-md-12"></div>
+    </div>
+    <div class="row banner main">
+        <div class="col-md-11 col-md-offset-1 padding-top">
+            <h1>Edit Starry Site</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 col-md-offset-1 padding-top">
+            <form action="{{url_for('editSite', state_id=site.state_id, site_id=site.id)}}" method="post">
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                        <input type ="text" maxlength="100" class="form-control" name="name" value="{{site.name}}">
+                    <label for="city">City:</label>
+                        <input type ="text" maxlength="50" class="form-control" name="city" value="{{site.city}}">
+                    <label for="state">State:</label>
+                        <div class="input-group">
+                            <select name="state">
+                                {% if state_list %}
+                                    {% for s in state_list %}
+                                        {% if s == state_name %}
+                                            <option value="{{s}}" selected>{{s}}</option>
+                                        {% else %}
+                                            <option value="{{s}}">{{s}}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
+                            </select>
+                        </div>
+                    <label for="phone">Phone:</label>
+                        <input type ="text" maxlength="12" class="form-control" name="phone" value="{{site.phone}}">
+                    <label for="website">Website:</label>
+                        <input type ="text" maxlength="100" class="form-control" name="website" value="{{site.website}}">
+                    <label for="notes">Notes:</label>
+                        <textarea class="form-control" maxlength="250" rows="3" name="notes">{{site.notes}}</textarea>
+                    <label for="site_type">Site Type (Primary):</label>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="site_type" id="site_type1" value="Tent Camping"
+                                {% if site.site_type == 'Tent Camping' %}
+                                    checked
+                                {% endif %}
+                                    >
+                                    Tent Camping
+                          </label>
+                        </div>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="site_type" id="site_type2" value="Open 24 Hours (no tent camping)"
+                                {% if site.site_type == 'Open 24 Hours (no tent camping)' %}
+                                    checked
+                                {% endif %}
+                                    >
+                                    Open 24 Hours (no tent camping)
+                          </label>
+                        </div>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="site_type" id="site_type3" value="Hotel/Motel"
+                                {% if site.site_type == 'Hotel/Motel'%}
+                                    checked
+                                {% endif %}
+                                    >
+                                    Hotel/Motel
+                          </label>
+                        </div>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="site_type" id="site_type4" value="Backpacking site"
+                            {% if site.site_type =='Backpacking Site' %}
+                                checked
+                            {% endif %}
+                                >
+                                Backpacking Site
+                          </label>
+                        </div>
+                    <button type="submit" class="btn btn-default" id="submit" type="submit">
+                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                        Save
+                    </button>
+                    <a href='{{url_for('showSite', state_id=site.state_id)}}'>
+                        <button class="btn btn-default" type="button">
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                            Cancel
+                        </button>
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

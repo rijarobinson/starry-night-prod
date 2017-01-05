@@ -1,0 +1,125 @@
+{% extends "main.html" %}
+{% block content %}
+{% include "header.html" %}
+    <div class="row divider blue">
+        <div class="col-md-12"></div>
+    </div>
+        <div class="row banner main">
+            <div class="col-md-1"></div>
+            <div class="col-md-11 padding-none">
+                <h1>Find a Starry Night!</h1>
+            </div>
+        </div>
+
+    <div class = 'flash'>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+
+                <ul>
+                {% for message in messages %}
+                    <li> <strong> {{ message }} </strong> </li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+
+    </div>
+
+    <div class="row padding-top padding-bottom">
+        <div class="col-md-1"></div>
+        <div class="col-md-10 padding-none">
+        </div>
+        <div class="col-md-1"></div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-5">
+            <h2>States that have sites listed</h2>
+            {% for state in states %}
+                {% if state.id in sites %}
+                    <a href = "{{url_for('showSite', state_id = state.id)}}">
+                    <div class="state-list">
+                        <h3>{{state.name}}</h3>
+                    </div>
+                    </a>
+                {% endif %}
+            {% endfor %}
+        </div>
+        <div class="col-md-1"></div>
+        <div class = "col-md-5">
+            <h2>Newest Sites Added!</h2>
+            <!--TODO: get dynamic value for starting mapNo in case decide to change recently added list-->
+            {% set mapNo = 4 %}
+            {% for site in allSites %}
+                <a href = "{{url_for('showSite', state_id = site.state_id)}}">
+                    <div class="state-list">
+                        <h5>{{ site.name }}</h5>
+                        <div class = "plain-text">{{ site.city }}, {{ site.state.abbrev }}</div>
+                    </div>
+                </a>
+                <div id="map{{mapNo}}" style="height: 150px; width: 100%;"></div>
+                {% set mapNo = mapNo - 1 %}
+            {% endfor %}
+        </div>
+    </div>
+
+    <!--need to really spend some time trying to understand this, especially how things are stepped through-->
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAGlGZ5rJOgFVxkz8biOVu0Ni6LmVyEddQ&callback=initMap">
+    </script>
+    <script>
+        function initMap() {
+            mapDivNo = 0;
+            var geocoder = new google.maps.Geocoder();    // instantiate a geocoder object
+            /*         console.log("jsSites: {{jsSites}}") */
+            {% for j in jsSites %}
+                // console.log("FIRST LINE BEFORE GET MAP-before geocoder: mapDivNo:" + mapDivNo);
+                /* trying to dynamically get the state id for the site to display the map correctly*/
+                var stateID = {{j.state_id}};
+                // console.log(stateID);
+                var stateAbbrev = "";
+                /*          console.log("jsStates: " + "{{jsStates}}");*/
+                {% for a in jsStates %}
+                    if (stateID == {{a.id}}) {
+                    stateAbbrev = "{{a.abbrev}}";
+                    }
+                {% endfor %}
+                var address = "{{j.name}} {{j.city}} " + stateAbbrev;
+                // console.log("address: " + address);
+                geocoder.geocode( { 'address': address }, function(results, status) {
+                if ( status == google.maps.GeocoderStatus.OK ) {
+                    // console.log("right after status ok: map" + mapDivNo);
+                    var latLon = results[0].geometry.location + "";
+                    var latLon = latLon.toString().replace("(","");
+                    var latLon = latLon.replace(")","");
+                    var splitLatLon = latLon.split(",");
+                    var lat = Number(splitLatLon[0]);
+                    var lon = Number(splitLatLon[1]);
+                    var uluru = {lat: lat, lng: lon};
+                    // console.log(uluru);
+                    // console.log("after uluru assigned: map" + mapDivNo);
+
+            {% endfor %}
+            /*TODO: remove hardcoded values and try to figure out how to get the length of json object*/
+            {% for x in range(0,5) %}
+                    var map = new google.maps.Map(document.getElementById("map{{x}}"), {
+                              zoom: 5,
+                              center: uluru
+                              })
+                /*    console.log("after get elementID: " + {{x}});*/
+                    var marker = new google.maps.Marker({
+                                 map: map,
+                                 position: uluru
+                                 });
+                }
+                else {
+                    alert("Geocode was not successful for the following reason: " + status);
+                }
+            });
+
+            {% endfor %}
+            mapDivNo = mapDivNo + 1;
+        /*    console.log("End for loop-map" + mapDivNo);*/
+        }
+    </script>
+{% endblock %}
