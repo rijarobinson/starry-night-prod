@@ -613,11 +613,11 @@ def deleteSite(state_id, site_id):
 
 
 def getUserID(email):
-    try:
-        user = session.query(User).filter_by(email=email).one()
-        return user.id
-    except:
-        return None
+#    try:
+     user = session.query(User).filter_by(email=email).one()
+     return user.id
+#    except:
+#        return None
 
 
 def getUserInfo(user_id):
@@ -630,7 +630,7 @@ def getUserInfo(user_id):
 
 def createUser(login_session):
     newUser = User(name=login_session['username'],
-                   email=login_session['email'],
+    	  	   email=login_session['email'],
                    picture=login_session['picture'])
     session.add(newUser)
     session.commit()
@@ -651,18 +651,14 @@ def filterStatesByName(state_name):
 
 
 def thisStateOwner(user_id, state_id):
-    try:
-        thisStateOwned = session.query(State).filter_by(user_id=user_id).all()
-        stateList = []
-        for s in thisStateOwned:
-            stateList.append(s.id)
-        if state_id in stateList:
-            return True
-        else:
-            return False
-    except:
-        None
-
+    thisStateOwned = session.query(State).filter_by(user_id=user_id).all()
+    stateList = []
+    for s in thisStateOwned:
+        stateList.append(s.id)
+    if state_id in stateList:
+        return True
+    else:
+        return False
 
 def filterSitesById(site_id):
     return session.query(Site).filter_by(id=site_id).first()
@@ -679,7 +675,7 @@ def thisSiteOwner(user_id, site_id):
         else:
             return False
     except:
-        None
+        return None
 
 
 def stateHasSites(state_id):
@@ -687,7 +683,7 @@ def stateHasSites(state_id):
         hasSites = session.query(Site).filter_by(state_id=state_id).first()
         return hasSites
     except:
-        None
+        return None
 
 
 if __name__ == '__main__':
