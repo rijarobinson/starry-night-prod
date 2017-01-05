@@ -665,25 +665,18 @@ def filterSitesById(site_id):
 
 
 def thisSiteOwner(user_id, site_id):
-    try:
-        thisSiteOwned = session.query(Site).filter_by(user_id=user_id).all()
-        siteList = []
-        for s in thisSiteOwned:
-            siteList.append(s.id)
-        if site_id in siteList:
-            return True
-        else:
-            return False
-    except:
-        return None
-
+    thisSiteOwned = session.query(Site).filter_by(user_id=user_id).all()
+    siteList = []
+    for s in thisSiteOwned:
+        siteList.append(s.id)
+    if site_id in siteList:
+        return True
+    else:
+        return False
 
 def stateHasSites(state_id):
-    try:
-        hasSites = session.query(Site).filter_by(state_id=state_id).first()
-        return hasSites
-    except:
-        return None
+    hasSites = session.query(Site).filter_by(state_id=state_id).first()
+    return hasSites
 
 
 if __name__ == '__main__':
