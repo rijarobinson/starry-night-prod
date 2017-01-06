@@ -7,6 +7,36 @@
 
 ssh port 2200
 
+-----BEGIN RSA PRIVATE KEY-----
+MIIEpAIBAAKCAQEA1BF8lfdA4dtt+0J9Li0+DYLX+ZsXFvG4CKOFziH6GRK6KPe1
+XgIKx7IZ9ZQKOnAo10V3teXaCWzUoKEJN0Xr2M0Y2xAnit4Eux8fVJfOcdwpX0DB
+HgZENUNCgPogUCntHX/0ujCRgzawpiV0g09P72ilO801yOOhtHcMrZWa2Q+WnOAO
+jpVgez3Pc+dSxRCdUClr309qu4hyiS1Ubnu46196sPsH531SZoNoJnRI3abG8G2c
+UtgvpWtBWDAYz9LuU+GFOo6u48EV8/rT8KHl5hCMWJGVdIPqKSL3z9PI8sa97AXw
+RXFel8YKpp9v00TjiUZDjd5yqBeZi3CcmGWd8QIDAQABAoIBAQC7uML9CULg61m+
+6gtffeMJGMLQDC5zPAN5ei7u2nrGCSLLMwLUNaCPRyPdlG89bZ1pee/PD6ljYHgT
+vJko2Xc9kcgn2nP2ZDPx5Enamwq/FXF2BR8t0cQ9Fc3f2AoUjBh+XY8n5ehZK2dR
+m6Q4vFN5DLv/ZNbwfjfdROjvG5hX/OzHjzzzgxcAIesOkC7OCRTRFYMRbG5AiQXJ
+xgmrxQVYsUcqZwvAbKDCDmUu3jdbO0mlNuRWsfgAa9XyY5DnUqhTktkp9p61tjx7
+AVv/z3UDUC0oQlKpznq9sJAfB0LqpVYkypRBhAJRWCDpPzu60vvez/AsGtkt7ENL
+oWdZEHKlAoGBAPEycKgJIWgSEa+te3+XBP9cr8npVoqeQDWmJtqZhR6xkGcnPYu3
+b8+NyWYKm9tU727hQJUt1UZZoYkofJPRw/pNWFUKj42a/TiHUWotJLJna28I2GVE
+16srycg3s5mKCi+1nN0d1JQRylYt3xX7vthQfFn0JDXsMrRUYIj/cT/DAoGBAOEV
+ZDq6z/0A6nKQ5I/hFQjZu9m8Cwf5s1XNaqPjArcPcpfpDAcmNMViXZ3GECte81ht
+gGoKsAkowELe9lrDKsTH8aP1Tqi1Er0Rl02PhrqrMiDDxOnT8XjBxQ/pgCRQ1M4H
+qrXt7nkMV6Ghu4F7WslVzKF/3253nyZpCyXFkaQ7AoGBAMYFAEKkxF15wDV3+1Vj
++kFgqh3dySQjClpBX9LGiWkKpKBbsga8AjrnkDqLaSvoDm781ZXkPB32xk0iBS0i
+4X/k8ilXc0XxwgUf63J9P4yMpcJSA78YhuvMFmyfdn8OupAyzWcn73flJzYbkPSu
+ax+S7JS5gOUYVwR/5YV0GlkbAoGARZpB1k9yhcBEv4zCwSNPR99c0aXum1bB+CR/
+d5J5gnZKb2NnjsZnxyn13RYkZeUExzGFZkVLzmlFmugrskFr9lIGDTeMTWtBEipg
+aWGavhq2c59WQyCBKWByOctxDsnYJKYGSh/7gH8qkhbbTt0AZAYeM0rBov1mv4/4
+HIQN14UCgYBY0mx0IZSIhRM2qKkIZKVzBrBYsO7EDPL65ooQVe7nzTAeBn78EgTW
+4ivEGPrG9GHg9AQfumk8/n3c8z3F4gDFJiF0TWEVGV9+XRVB8TZ9p9wWUp3CEsTo
+HxbWY4ShIn9XbG71eP1P3WRG4a9+O0zoFqWljC3Yn0STbaTCx2AMpQ==
+-----END RSA PRIVATE KEY-----
+
+
+
 The Starry Night Database was developed as part of Udacity's Full Stack Developer Nanodegree. It contains the front and back end code for a system designed to share data on great stargazing sites. This version is configured to run on AWS.
 
 The purpose of this project was to develop a database and functions that would pass the requirements of the Linux Configuration project.
