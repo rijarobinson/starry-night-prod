@@ -33,7 +33,8 @@
                     <a href="{{url_for('showSite', state_id=state.id)}}">
                         <div class="state-list">
                             <h3>
-                            {{state.name}} - {{state.abbrev}}
+                            {{state.name}} - {{state.abbrev}}<br>
+                            Current User ID: {{ currentUserID }}<br>
                             {% if currentUserID == 1 %}
                                      -
                                     <a href="{{url_for('editState', state_id=state.id )}}">

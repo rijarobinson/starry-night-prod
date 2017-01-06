@@ -446,7 +446,8 @@ def showSite(state_id):
                                    jsSites=[s.serialize for s in sites],
                                    jsStates=[state.serialize])
         else:
-            creator = getUserID(login_session['user_id'])
+# previous line:   creator = getUserID(login_session['user_id'])
+            creator = getUserID(login_session['email'])
             return render_template('site.html', sites=sites, state=state,
                                    creator=creator,
                                    currentUserID=currentUserID,
@@ -474,7 +475,7 @@ def showSingleSite(state_id, site_id):
                                    jsSites=[site.serialize],
                                    jsStates=[state.serialize])
         else:
-            creator = getUserID(login_session['user_id'])
+            creator = getUserID(login_session['email'])
             return render_template('singleSite.html', site=site,
                                    state=state, creator=creator,
                                    currentUserID=currentUserID,
