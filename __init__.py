@@ -7,6 +7,7 @@ import random
 import string
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client.client import FlowExchangeError
+from oauth2client.client import AccessTokenCredentials
 import httplib2
 import json
 from flask import make_response
@@ -20,7 +21,7 @@ CLIENT_ID = (json.loads(open('/var/www/FlaskApp/StarryNight/client_secrets.json'
 
 
 # Connect to Database and create database session
-engine = create_engine('postgresql://catalog:70075u173!@localhost/catalog')
+engine = create_engine('postgresql+psycopg2://catalog:70075u173!@localhost/catalog')
 Base.metadata.bind = engine
 
 DBSession = sessionmaker(bind=engine)
@@ -93,7 +94,8 @@ def gconnect():
 
     # Store the access token in the session for later use.
     login_session['provider'] = 'google'
-    login_session['credentials'] = credentials
+    #line below was changed
+    login_session['credentials'] = credentials.access_token
     login_session['gplus_id'] = gplus_id
 
     # Get user info
@@ -138,7 +140,8 @@ def gdisconnect():
                                  401)
         response.headers['Content-Type'] = 'application/json'
         return response
-    my_access_token = credentials.access_token
+#changed this line from my_access_token = credentials.access_token
+    my_access_token = credentials
     if my_access_token is None:
         print 'Access token is None'
         response = make_response(json.dumps("Current user is not connected."),
@@ -322,6 +325,7 @@ def admin_access(f):
 def showStates():
     states = allStates()
     front = session.query(Site).order_by(desc(Site.id)).limit(5).all()
+    session.commit()
     siteList = []
     for a in front:
         siteList.append(a.state_id)
@@ -409,6 +413,7 @@ def deleteState(state_id):
         if allowedToDelete:
             stateToDelete = (session.query(State).filter_by(id=state_id)
                              .one())
+            session.commit()
             if request.method == 'POST':
                 session.delete(stateToDelete)
                 flash('%s Successfully Deleted' % stateToDelete.name)
@@ -431,6 +436,7 @@ def deleteState(state_id):
 def showSite(state_id):
     state = filterStatesById(state_id)
     sites = session.query(Site).filter_by(state_id=state_id).all()
+    session.commit()
     creator = ""
     try:
         currentUserID = login_session['user_id']
@@ -613,19 +619,18 @@ def deleteSite(state_id, site_id):
 
 
 def getUserID(email):
-#    try:
-     user = session.query(User).filter_by(email=email).one()
-     return user.id
-#    except:
-#        return None
+#   try:
+    user = session.query(User).filter_by(email=email).one()
+    session.commit()
+    return user.id
+#   except:
+#       return None
 
 
 def getUserInfo(user_id):
-    try:
         user = session.query(User).filter_by(id=user_id).first()
+        session.commit()
         return user
-    except:
-        None
 
 
 def createUser(login_session):
@@ -635,23 +640,30 @@ def createUser(login_session):
     session.add(newUser)
     session.commit()
     user = session.query(User).filter_by(email=login_session['email']).one()
+    session.commit()
     return user.id
 
 
 def allStates():
-    return session.query(State).order_by(asc(State.name)).all()
+    allStates = session.query(State).order_by(asc(State.name)).all()
+    session.commit()
+    return allStates
 
 
 def filterStatesById(state_id):
-    return session.query(State).filter_by(id=state_id).first()
+    filterById = session.query(State).filter_by(id=state_id).first()
+    session.commit()
+    return filterById
 
 
 def filterStatesByName(state_name):
-    return session.query(State).filter_by(name=state_name).first()
-
+    filterByName = session.query(State).filter_by(name=state_name).first()
+    session.commit()
+    return filterByName
 
 def thisStateOwner(user_id, state_id):
     thisStateOwned = session.query(State).filter_by(user_id=user_id).all()
+    session.commit()
     stateList = []
     for s in thisStateOwned:
         stateList.append(s.id)
@@ -661,11 +673,13 @@ def thisStateOwner(user_id, state_id):
         return False
 
 def filterSitesById(site_id):
-    return session.query(Site).filter_by(id=site_id).first()
-
+    filterSiteById = session.query(Site).filter_by(id=site_id).first()
+    session.commit()
+    return filterSiteById
 
 def thisSiteOwner(user_id, site_id):
     thisSiteOwned = session.query(Site).filter_by(user_id=user_id).all()
+    session.commit()
     siteList = []
     for s in thisSiteOwned:
         siteList.append(s.id)
@@ -676,6 +690,7 @@ def thisSiteOwner(user_id, site_id):
 
 def stateHasSites(state_id):
     hasSites = session.query(Site).filter_by(state_id=state_id).first()
+    session.commit()
     return hasSites
 
 

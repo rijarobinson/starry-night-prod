@@ -106,7 +106,6 @@
                     }
                 {% endfor %}
                 var address = "{{j.name}} {{j.city}} " + stateAbbrev;
-                console.log(address);
                 geocoder.geocode( { 'address': address }, function(results, status) {
                     if ( status == google.maps.GeocoderStatus.OK ) {
                         var latLon = results[0].geometry.location + "";
