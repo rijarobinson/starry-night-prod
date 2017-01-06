@@ -27,7 +27,7 @@
     <div class="row padding-top padding-bottom">
         <div class="col-md-1"></div>
         <div class="col-md-11 padding-none">
-<br>Current UserID: {{ currentUserID }}<br>            <!--show this button only if state's creator-->
+            <!--show this button only if state's creator-->
             {% if currentUserID == 1 %}
                 <a href="{{url_for('editState', state_id=state.id )}}">
                     <button class="btn btn-default" id="edit-state">
@@ -79,7 +79,6 @@
                         <p>{{s.notes}}</p>
                     {% endif %}
                         <div class="site-display">Site Type: {{s.site_type}}</div>
-		    <br>creator ID: {{ s.user_id }}<br>
                     {% if s.user_id == currentUserID %}
                         <a href="{{url_for('editSite', state_id=state.id, site_id=s.id )}}">Edit</a> |
                         <a href="{{url_for('deleteSite', state_id=state.id, site_id=s.id )}}">Delete</a>

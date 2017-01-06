@@ -94,7 +94,6 @@ def gconnect():
 
     # Store the access token in the session for later use.
     login_session['provider'] = 'google'
-    #line below was changed
     login_session['credentials'] = credentials.access_token
     login_session['gplus_id'] = gplus_id
 
@@ -140,7 +139,6 @@ def gdisconnect():
                                  401)
         response.headers['Content-Type'] = 'application/json'
         return response
-#changed this line from my_access_token = credentials.access_token
     my_access_token = credentials
     if my_access_token is None:
         print 'Access token is None'
@@ -291,32 +289,32 @@ def admin_access(f):
 
 
 # JSON APIs to view sites in State List
-#@app.route('/state/<int:state_id>/site/JSON')
-#def stateSiteJSON(state_id):
-#    state = filterStatesById(state_id)
-#    sites = session.query(Site).filter_by(state_id=state_id).all()
-#    return jsonify(Sites=[s.serialize for s in sites])
+@app.route('/state/<int:state_id>/site/JSON')
+def stateSiteJSON(state_id):
+    state = filterStatesById(state_id)
+    sites = session.query(Site).filter_by(state_id=state_id).all()
+    return jsonify(Sites=[s.serialize for s in sites])
 
 
 # JSON APIs to view single site
-#@app.route('/state/<int:state_id>/site/<int:site_id>/JSON')
-#def siteJSON(state_id, site_id):
-#    sites = filterSitesById(site_id)
-#    return jsonify(Site=sites.serialize)
+@app.route('/state/<int:state_id>/site/<int:site_id>/JSON')
+def siteJSON(state_id, site_id):
+    sites = filterSitesById(site_id)
+    return jsonify(Site=sites.serialize)
 
 
 # JSON API to view all states
-#@app.route('/states/JSON')
-#def statesJSON():
-#    states = session.query(State).all()
-#    return jsonify(states=[s.serialize for s in states])
+@app.route('/states/JSON')
+def statesJSON():
+    states = session.query(State).all()
+    return jsonify(states=[s.serialize for s in states])
 
 
 # JSON API to view all sites
-#@app.route('/sites/JSON')
-#def statesJSON():
-#    sites = session.query(Site).all()
-#    return jsonify(sites=[s.serialize for s in sites])
+@app.route('/sites/JSON')
+def sitesJSON():
+    sites = session.query(Site).all()
+    return jsonify(sites=[s.serialize for s in sites])
 
 
 # Show all states and 5 newly created sites
@@ -446,7 +444,6 @@ def showSite(state_id):
                                    jsSites=[s.serialize for s in sites],
                                    jsStates=[state.serialize])
         else:
-# previous line:   creator = getUserID(login_session['user_id'])
             creator = getUserID(login_session['email'])
             return render_template('site.html', sites=sites, state=state,
                                    creator=creator,
@@ -620,12 +617,12 @@ def deleteSite(state_id, site_id):
 
 
 def getUserID(email):
-#   try:
-    user = session.query(User).filter_by(email=email).one()
-    session.commit()
-    return user.id
-#   except:
-#       return None
+   try:
+       user = session.query(User).filter_by(email=email).one()
+       session.commit()
+       return user.id
+   except:
+       return None
 
 
 def getUserInfo(user_id):
