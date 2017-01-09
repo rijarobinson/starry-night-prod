@@ -1,3 +1,4 @@
+<!--TODO: would be cool to have 1 map with all the sites-->
 {% extends "main.html" %}
 {% block content %}
 {% include "header.html" %}
@@ -81,7 +82,6 @@
         </div>
         <div class="col-md-6">
             <h2>Newest Sites Added!</h2>
-            {% set mapNo = sites|length -1 %}
             {% for site in allSites %}
                 <a href="{{url_for('showSingleSite', state_id=site.state_id, site_id=site.id)}}">
                     <div class="state-list">
@@ -89,50 +89,8 @@
                         <div class="plain-text">{{site.city}}, {{site.state.abbrev}}</div>
                     </div>
                 </a>
-                <div id="map{{mapNo}}" style="height: 150px; width: 100%;">Map not available-check address of site or internet connection.</div>
-                {% set mapNo = mapNo - 1 %}
+
             {% endfor %}
         </div>
     </div>
-    <script>
-        function initMap() {
-            var geocoder = new google.maps.Geocoder();    // instantiate a geocoder object
-            {% for j in jsSites %}
-                var stateID = {{j.state_id}};
-                var stateAbbrev = "";
-                {% for a in jsStates %}
-                    if (stateID == {{a.id}}) {
-                        stateAbbrev = "{{a.abbrev}}";
-                    }
-                {% endfor %}
-                var address = "{{j.name}} {{j.city}} " + stateAbbrev;
-                geocoder.geocode( { 'address': address }, function(results, status) {
-                    if ( status == google.maps.GeocoderStatus.OK ) {
-                        var latLon = results[0].geometry.location + "";
-                        var latLon = latLon.toString().replace("(","");
-                        var latLon = latLon.replace(")","");
-                        var splitLatLon = latLon.split(",");
-                        var lat = Number(splitLatLon[0]);
-                        var lon = Number(splitLatLon[1]);
-                        var uluru = {lat: lat, lng: lon};
-            {% endfor %}
-            {% for x in range(0,jsSites|length) %}
-                    var map = new google.maps.Map(document.getElementById("map{{x}}"), {
-                              zoom: 5,
-                              center: uluru
-                              })
-                    var marker = new google.maps.Marker({
-                                 map: map,
-                                 position: uluru
-                                 });
-                }
-                else {
-                    console.log("Geocode was not successful for the following reason: " + status);
-                }
-            });
-            {% endfor %}
-        }
-    </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8GWgtUsLZL2JGzG2ydB93q_QtjVkLYlA&callback=initMap">
-	</script>
 {% endblock %}
