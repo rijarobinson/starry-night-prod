@@ -1,9 +1,9 @@
 #Starry Night Production Site Database (Udacity Linux Configuration Project)
 ###(In fullfillment of Udacity's Full Stack Developer Program)
 
-[http://ec2-35-166-167-209.us-west-2.compute.amazonaws.com/](http://ec2-35-166-167-209.us-west-2.compute.amazonaws.com/)
+[http://ec2-35-165-240-165.us-west-2.compute.amazonaws.com/](http://ec2-35-165-240-165.us-west-2.compute.amazonaws.com/)
 
-[http://35.166.167.209/](http://35.166.167.209/)
+[http://35.165.240.165/](http://35.165.240.165/)
 
 ssh port 2200
 
