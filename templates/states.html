@@ -101,6 +101,7 @@
         function initMap() {
             var geocoder = new google.maps.Geocoder();    // instantiate a geocoder object
             {% for j in jsSites %}
+	{% set mapNo = loop.revindex0 %}
                var stateID = {{j.state_id}};
                 var stateAbbrev = "";
                 {% for a in jsStates %}
@@ -109,7 +110,6 @@
                     }
                 {% endfor %}
                 var address = "{{j.name}} {{j.city}} " + stateAbbrev;
-                console.log(address);
                 geocoder.geocode( { 'address': address }, function(results, status) {
                     if ( status == google.maps.GeocoderStatus.OK ) {
                         var latLon = results[0].geometry.location + "";
@@ -119,9 +119,7 @@
                         var lat = Number(splitLatLon[0]);
                         var lon = Number(splitLatLon[1]);
                         var uluru = {lat: lat, lng: lon};
-            {% endfor %}
-            {% for x in range(0,jsSites|length) %}
-                    var map = new google.maps.Map(document.getElementById("map{{x}}"), {
+                    var map = new google.maps.Map(document.getElementById("map{{mapNo}}"), {
                               zoom: 5,
                               center: uluru
                               })
