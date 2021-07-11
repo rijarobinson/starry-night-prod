@@ -1,5 +1,5 @@
-#Starry Night Production Site Database (Udacity Linux Configuration Project)
-###(In fullfillment of Udacity's Full Stack Developer Program)
+# Starry Night Production Site Database (Udacity Linux Configuration Project)
+### (In fullfillment of Udacity's Full Stack Developer Program)
 
 [http://ec2-35-165-240-165.us-west-2.compute.amazonaws.com/](http://ec2-35-165-240-165.us-west-2.compute.amazonaws.com/)
 
@@ -11,7 +11,7 @@ The Starry Night Database was developed as part of Udacity's Full Stack Develope
 
 The purpose of this project was to develop a database and functions that would pass the requirements of the Linux Configuration project.
 
-##Table of Contents
+## Table of Contents
  * [Functionality](#functionality)
  * [Structure Overview](#structure-overview)
  * [Technologies](#technologies)
@@ -20,7 +20,7 @@ The purpose of this project was to develop a database and functions that would p
  * [Using the Software](#using-software)
 
 <a id="functionality"></a>
-##Functionality
+## Functionality
 The *Starry Night Database* contains functionality for adding, editing, and deleting sites (as well as states for Administrator privilige) for logged in users (restricted to record creator). The database also contains a State table that is loaded upon initilization, and the administrator is automatically designated with the first user. There is a mapping component that will translate addresses to latitude and longitude and provide a map for each site. Commonly used queries are stored as Python functions. The application has the ability to browse data without being logged in. The site utilizes Google and Facebook login APIs for authorization/authentication.
 <a id="structure-overview"></a>
 ##Structure Overview
@@ -31,7 +31,7 @@ The *Starry Night Database* contains functionality for adding, editing, and dele
 | State (t)     | Manually loaded on initialization of app  | id, user_id (foreign)                     |
 | Site (t)      | Data on location and description of sites | id, state_id (foreign), user_id (foreign) |
 <a id="technologies"></a>
-##Technologies
+## Technologies
 
 | Tool Used  | Purpose                                         | Notes                                       | About         |
 | ---------- | ----------------------------------------------- | ------------------------------------------- | ------------- |
@@ -54,7 +54,7 @@ The *Starry Night Database* contains functionality for adding, editing, and dele
 | JSON      | Data Interchange Format                          | App creates and utilizes JSON datasets      | [More info](http://www.json.org/) |
 
 <a id="folders-files"></a>
-##Folders & Files
+## Folders & Files
 
 | File                          | Purpose                                   | Notes                                       |
 | ----------------------------- | ----------------------------------------- | ------------------------------------------- |
@@ -81,7 +81,7 @@ The *Starry Night Database* contains functionality for adding, editing, and dele
 | static/sun_290ppi.jpg         | App header image                          |  |
 
 <a id="libraries-modules"></a>
-##Libraries & Modules
+## Libraries & Modules
 | Library or Module | Purpose                                                        |
 | ----------------- | -------------------------------------------------------------- |
 | oauth2client      | Python library for accessing resources protected by OAuth 2.0  |
@@ -95,7 +95,7 @@ The *Starry Night Database* contains functionality for adding, editing, and dele
 | psycopg2          | postgresql dialect                                             |
 
 <a id="using-software"></a>
-##Using the Software
+## Using the Software
 **To use the software**
 
 1.  Create your Virtual Machine with Amazon Web Services.
